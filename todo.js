@@ -1,15 +1,16 @@
 const fs = require('fs')
 
-// var arr = []
-// var newList = ["1. bake a delicious peanut butter cake"]
-//
-// process.argv.forEach((val, index) => {
-//   arr.push(`${val}`)
-// })
-//   arr.splice(0,2)
-//   console.log(arr)
-
-
+var display = () =>{
+  console.log("<--------------------->")
+  console.log("help");
+  console.log("list");
+  console.log("add <task_content>");
+  console.log("save");
+  console.log("delete <task_id>");
+  console.log("complete <task_id>");
+  console.log("uncomplete <task_id>");
+  console.log("<-------------------->");
+}
 
 class Task{
   constructor(tugas){
@@ -52,18 +53,20 @@ class Data{
   static add_task(text){
     this.allData.push(new Task(text))
     console.log("Added " + text + " to your to do list!")
+    this.save()
     return this.allData
   }
 
   static delete_task(id){
     console.log("Deleted " + this.allData[id - 1].task + " from your to do list")
     this.allData.splice((id - 1),1)
-
+    this.save()
     return this.allData
   }
 
   static complete(id){
     this.allData[id -1].complete = "[v]"
+    this.save()
   }
 
   static save(){
@@ -74,9 +77,41 @@ class Data{
   }
 }
 
-Data.parseJSON();
-Data.list();
+Data.parseJSON()
+process.argv.forEach((val, index) => {
+  process.argv.splice(0,2)
+  var func = process.argv[0]
+  var arg = process.argv[1]
+
+  switch (func) {
+    case "help":
+        display();
+      break;
+    case "list":
+      Data.list()
+      break;
+    case "add":
+      Data.add_task(arg)
+      break;
+    case "delete":
+      Data.delete_task(arg)
+      break;
+    case "complete":
+      Data.complete(arg)
+      break;
+    case "save":
+      Data.save()
+      break;
+
+    default:
+        display();
+  }
+})
+
+// Data.parseJSON();
+// Data.list();
 // Data.add_task("bangun")
 // Data.save()
 // Data.delete_task(3)
 // console.log(Data.allData)
+// display()
