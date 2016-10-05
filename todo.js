@@ -16,15 +16,20 @@ let input = process.argv.splice(2);
 switch (input[0]) {
   case "add":
     //write and update the data.json
-    jsonfile.writeFileSync(file, input);
+    let add_result = arrayToObject(input)
+    jsonfile.writeFileSync(file, add_result);
     break;
   case "list":
     let json = jsonfile.readFileSync(file);
-    console.log(json);
+    console.log("--To Do List--");
     // see the data of data.json and present it with desired format
+    display(json);
     break;
   case "delete":
-    // delete the list based on id in the data.json
+    let delete_result = jsonfile.readFileSync(file);
+    // call the delete function
+    deletion(delete_result, input[1]);
+    jsonfile.writeFileSync(file, delete_result);
     break;
   case "complete":
     //see only the tasks which has competed task
@@ -51,7 +56,7 @@ switch (input[0]) {
 
 // function that translate array to object
 function arrayToObject(arr) {
-  var temp = {};
+  var temp = [];
   for (var i = 0; i < arr.length; i += 1)
     temp[i] = {
       id: i,
@@ -60,8 +65,14 @@ function arrayToObject(arr) {
   return temp;
 }
 
+//function that display the current list on data.json with the desire format
 function display(json){
-  for(var i = 0; i < json.length; i+=1 ){
-    console.log(json[i]+'.','json[itask')
+  for(var i = 1; i < json.length; i+=1 ){
+    console.log( json[i]["id"] + ". [ ] " + json[i]["task"])
   }
+}
+
+//function delete
+function deletion(arr, index) {
+  return arr.splice(index,1);
 }
