@@ -6,7 +6,7 @@ class Data {
     return JSON.parse(listToDo);
   }
 
-  static completed(id) {
+  static complete(id) {
     let newData = this.getAllData();
     let tobecompleted = newData[id-1];
     tobecompleted.completed = "x";
@@ -23,7 +23,7 @@ class Data {
     });
   }
 
-  static uncompleted(id) {
+  static uncomplete(id) {
     let newData = this.getAllData();
     let tobecompleted = newData[id-1];
     tobecompleted.completed = " ";
@@ -123,20 +123,17 @@ process.argv.forEach((val) => {
     else if (cmd == "help" || cmd == "") {
       todo.help();
     }
-    else if (cmd == "completed") {
-      Data.completed(arg);
-    }
     else if (cmd == "add" && arg != "") {
       Data.writeData(arg);
     }
     else if (cmd == "delete" && isNaN(arg) == false) {
       Data.delData(arg);
     }
-    else if (cmd == "completed" && isNaN(arg) == false) {
-      Data.completed(arg);
+    else if (cmd == "complete" && isNaN(arg) == false) {
+      Data.complete(arg);
     }
-    else if (cmd == "uncompleted" && isNaN(arg) == false) {
-      Data.uncompleted(arg);
+    else if (cmd == "uncomplete" && isNaN(arg) == false) {
+      Data.uncomplete(arg);
     }
     else {
       todo.help();
