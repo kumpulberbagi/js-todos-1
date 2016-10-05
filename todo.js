@@ -4,6 +4,8 @@ var file = 'data.json'
 
 var result= []
 var list = []
+var index = 0
+var cekStatus = false
 var read = jsonfile.readFileSync(file)
 for (var i = 0; i < read.length; i++) {
     list.push(read[i])
@@ -59,27 +61,38 @@ class Task {
   }
 }
 
+let searchIndexArr = (id) => {
+  for(let i = 0 ; i < list.length ; i++){
+    // console.log(typeof list[i].id)
+    if(id === String(list[i].id)){
+      // console.log(i);
+      return i
+    }
+  }
+}
 
 argv.forEach((val, index) => {
 
+  let idToDo = argv[3]
+
   val = val.toLowerCase()
+  index = searchIndexArr(idToDo)
 
   if(val == "help"){
     printHelp()
   }
   else if(val == "list"){
-
+    console.log(`ID. [CheckList] TODO's NAME`)
     for (var i = 0; i < list.length; i++) {
       // data.push(read[i])
       var status = list[i].status
       // list.push(new Task(read[i].id, read[i].task))
-      console.log(`${i+1}. [${status == true ? "x" : " "}] ${list[i].task}`);
+      console.log(`${list[i].id}. [${status == true ? "x" : " "}] ${list[i].task}`);
       // console.log(list[0]);
     }
 
   }
   else if (val == "add") {
-
       // console.log(argv.length);
       var dataBaru = ""
 
@@ -101,11 +114,13 @@ argv.forEach((val, index) => {
   }
   else if (val == "task") {
 
-    var status = list[argv[3]-1].status
     // console.log(list[argv[3]-1].id);
     // console.log(argv[3]);
 
-    console.log(`nama task "${list[argv[3]-1].task}", status ${status == true ? "completed" : "uncomplete"}.`);
+    cekStatus = list[index].cekStatus
+    // console.log(typeof idToDo);
+    // console.log(index);
+    console.log(`nama task "${list[index].task}", status ${cekStatus == true ? "completed" : "uncomplete"}.`);
   }
   else if (val == "delete") {
     // console.log(argv[3]);
@@ -114,25 +129,25 @@ argv.forEach((val, index) => {
     //
     // }
 
-    console.log(`Delete "${list[argv[3]-1].task}" to your TODO list`);
+    console.log(`Delete "${list[index].task}" to your TODO list`);
     // console.log(list[i].id);
-    list.splice(argv[3]-1, 1)
+    list.splice(index, 1)
     jsonfile.writeFileSync(file, list)
   }
   else if (val == "completed") {
 
     // console.log(list[i].id);
-    list[argv[3]-1].status = true
+    list[index].status = true
     jsonfile.writeFileSync(file, list)
-    console.log(`Task "${list[argv[3]-1].task}" to your TODO list telah selesai`);
+    console.log(`Task "${list[index].task}" to your TODO list telah selesai`);
   }
 
   else if (val == "uncompleted") {
 
     // console.log(list[i].id);
-    list[argv[3]-1].status = false
+    list[index].status = false
     jsonfile.writeFileSync(file, list)
-    console.log(`Task "${list[argv[3]-1].task}" to your TODO list belum selesai`);
+    console.log(`Task "${list[index].task}" to your TODO list belum selesai`);
   }
 
   // else if(index == 2){
