@@ -6,7 +6,7 @@ class Data {
     return JSON.parse(listToDo);
   }
 
-  static complete(id) {
+  static completed(id) {
     let newData = this.getAllData();
     let tobecompleted = newData[id-1];
     tobecompleted.completed = "x";
@@ -23,7 +23,7 @@ class Data {
     });
   }
 
-  static uncomplete(id) {
+  static uncompleted(id) {
     let newData = this.getAllData();
     let tobecompleted = newData[id-1];
     tobecompleted.completed = " ";
@@ -111,53 +111,34 @@ let todo = new ToDo();
 // Data.writeData("Terus berjuang");
 
 // Data.delData(2);
+process.argv.splice(0,2);
+let cmd = process.argv.splice(0,1).join("");
+let arg = process.argv.join(" ");
 
-process.argv.forEach((val) => {
-    process.argv.splice(0,2);
-    let cmd = process.argv.splice(0,1).join("");
-    let arg = process.argv.join(" ");
-
-    if (cmd == "list") {
-        todo.list();
-    }
-    else if (cmd == "help" || cmd == "") {
-      todo.help();
-    }
-    else if (cmd == "add" && arg != "") {
-      Data.writeData(arg);
-    }
-    else if (cmd == "delete" && isNaN(arg) == false) {
-      Data.delData(arg);
-    }
-    else if (cmd == "complete" && isNaN(arg) == false) {
-      Data.complete(arg);
-    }
-    else if (cmd == "uncomplete" && isNaN(arg) == false) {
-      Data.uncomplete(arg);
-    }
-    else {
-      todo.help();
-    }
-    // switch (cmd) {
-    //   case "list":
-    //     todo.list();
-    //     break;
-    //   case "help":
-    //     todo.help();
-    //     break;
-    //   case "completed":
-    //     Data.completed(arg);
-    //   case "add":
-    //     Data.writeData(arg);
-    //     break;
-    //   case "delete":
-    //     Data.delData(arg);
-    //   default:
-    //     ;
-    // }
-
-});
-
+if (cmd == "list") {
+    todo.list();
+}
+else if (cmd == "help" || cmd == "") {
+  todo.help();
+}
+else if (cmd == "completed") {
+  Data.completed(arg);
+}
+else if (cmd == "add" && arg != "") {
+  Data.writeData(arg);
+}
+else if (cmd == "delete" && isNaN(arg) == false) {
+  Data.delData(arg);
+}
+else if (cmd == "completed" && isNaN(arg) == false) {
+  Data.completed(arg);
+}
+else if (cmd == "uncompleted" && isNaN(arg) == false) {
+  Data.uncompleted(arg);
+}
+else {
+  todo.help();
+}
 
 // console.log(Data.getAllData());
 // console.log(Data.updateData());
