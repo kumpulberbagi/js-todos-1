@@ -14,9 +14,11 @@ var display = () =>{
 
 class Task{
   constructor(tugas){
-    this.id = Data.allData.length + 1
+    // this.id = Data.allData[Data.allData.length-1].id + 1
     this.task = tugas
     this.complete = "[x]"
+    this.created_date = new Date().toLocaleString()
+    this.complete_date = "date"
   }
 }
 
@@ -45,10 +47,14 @@ class Data{
 
   static list(){
     for(var i = 0; i < this.take_task().length; i++){
-      console.log(this.allData[i].id,this.allData[i].complete,this.take_task()[i])
+      console.log(i+1,this.allData[i].complete,this.take_task()[i])
     }
     return ""
   }
+
+  // static list:outstanding(){
+  //   console.log("x")
+  // }
 
   static add_task(text){
     this.allData.push(new Task(text))
@@ -66,13 +72,21 @@ class Data{
 
   static complete(id){
     this.allData[id -1].complete = "[v]"
+    this.allData[id -1].complete_date = new Date().toLocaleString()
     this.save()
   }
+
+  static uncomplete(id){
+    this.allData[id -1].complete = "[x]"
+    this.allData[id -1].complete_date = "date"
+    this.save()
+  }
+
 
   static save(){
     fs.writeFile('data.json', JSON.stringify(this.allData), (err) => {
       if (err) throw err;
-      console.log('It\'s saved!');
+      console.log('Your input, It\'s saved!');
     });
   }
 }
@@ -80,8 +94,8 @@ class Data{
 Data.parseJSON()
 process.argv.forEach((val, index) => {
   process.argv.splice(0,2)
-  var func = process.argv[0]
-  var arg = process.argv[1]
+  var func = process.argv.splice(0, 1).join("")
+  var arg = process.argv.join(" ")
 
   switch (func) {
     case "help":
@@ -99,6 +113,9 @@ process.argv.forEach((val, index) => {
     case "complete":
       Data.complete(arg)
       break;
+    case "uncomplete":
+      Data.uncomplete(arg)
+      break;
     case "save":
       Data.save()
       break;
@@ -115,3 +132,4 @@ process.argv.forEach((val, index) => {
 // Data.delete_task(3)
 // console.log(Data.allData)
 // display()
+// Data.list:outstanding()
