@@ -21,7 +21,9 @@ switch (input[0]) {
     break;
   case "list":
     let json = jsonfile.readFileSync(file);
-    console.log("--To Do List--");
+    console.log("__________________________________________");
+    console.log("ID  |     DONE     |      TASK   ");
+    console.log("``````````````````````````````````````````");
     // see the data of data.json and present it with desired format
     display(json);
     break;
@@ -33,9 +35,9 @@ switch (input[0]) {
     break;
   case "complete":
     //see only the tasks which has competed task
-    break;
-  case "uncomplete":
-    // see only the uncomplete tasks
+    let complete_list = jsonfile.readFileSync(file);
+    done(complete_list, input[1]);
+    jsonfile.writeFileSync(file, complete_list);
     break;
   default:
     // print the help;
@@ -60,7 +62,8 @@ function arrayToObject(arr) {
   for (var i = 0; i < arr.length; i += 1)
     temp[i] = {
       id: i,
-      task: arr[i]
+      task: arr[i],
+      complete: "incomplete"
     }
   return temp;
 }
@@ -68,11 +71,16 @@ function arrayToObject(arr) {
 //function that display the current list on data.json with the desire format
 function display(json){
   for(var i = 1; i < json.length; i+=1 ){
-    console.log( json[i]["id"] + ". [ ] " + json[i]["task"])
+    console.log( json[i]["id"] + ".  |  " + json[i]["complete"] + "  | " + json[i]["task"])
   }
 }
 
 //function delete
 function deletion(arr, index) {
   return arr.splice(index,1);
+}
+
+// function update()
+function done(obj, idx) {
+  return obj[idx]["complete"] = "complete  ";
 }
