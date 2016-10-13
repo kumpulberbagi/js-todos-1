@@ -39,9 +39,9 @@ class TodoList {
   seeAll(){
     for (var i = 0; i < json.length; i++) {
       if(json[i].status){
-        console.log(`[x] ${json[i].task}`);
+        console.log(`${json[i].id} [x] ${json[i].task}`);
       }else {
-        console.log(`[ ] ${json[i].task}`);
+        console.log(`${json[i].id} [ ] ${json[i].task}`);
       }
     }
 
