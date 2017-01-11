@@ -4,7 +4,6 @@ var jsonfile = require('jsonfile')
 var file = 'data.json'
 
 var database  = jsonfile.readFileSync(file)
-var tambah = []
 
 
 process.argv.forEach((pilihan) => {
@@ -13,13 +12,12 @@ process.argv.forEach((pilihan) => {
   }else if(pilihan === "help"){
       console.log(`\n node todo.js list \n node todo.js add <task_content> \n node todo.js task <task_id> \n node todo.js delete <task_id> \n node todo.js complete <task_id> \n node todo.js uncomplete <task_id>`);
   }else if(pilihan === "add"){
-
       var newData = ''
       for(var i = 3 ; i < process.argv.length ; i++){
         newData += process.argv[i] + " "
       }
-      var obj = {id:database[database.length-1].id+1, task: newData,status:"[ ]"}
-      tambah = obj
+      var tambah = {id:database[database.length-1].id+1, task: newData,status:"[ ]"}
+      console.log(tambah);
       database.push(tambah)
       jsonfile.writeFileSync(file,database)
       console.log(`Add "${process.argv[3]}" ke Todo list`)
@@ -62,7 +60,6 @@ process.argv.forEach((pilihan) => {
           //console.log(`[ ] ${database[i].task}`);
         }
         console.log(`${database[i].status} : ${database[i].task} `)
-
       }
   }
 });
